@@ -2,7 +2,7 @@
 
 ## Description
 
-A robust learning management system focused on video-based education. The frontend is built with Next.js and the backend with Node.js and Express. The platform is containerized with Docker and fully deployed on AWS, utilizing ECR for image storage, S3 for video hosting, DynamoDB for scalable NoSQL data storage, Lambda for serverless functions, and CloudFront for fast, secure content delivery.
+A robust LMS focused on video-based education. The frontend is built with Next.js and the backend with Node.js and Express. The platform is containerized with Docker and fully deployed on AWS, utilizing ECR for image storage, S3 for video hosting, DynamoDB for scalable NoSQL data storage, Lambda for serverless functions, and CloudFront for fast, secure content delivery.
 
 ## Getting Started
 
