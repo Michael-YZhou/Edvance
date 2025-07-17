@@ -32,7 +32,7 @@ const CourseCardSearch = ({
           <p className="course-card-search__teacher">By {course.teacherName}</p>
           <div className="course-card-search__footer">
             <span className="course-card-search__footer-price">
-              ${formatPrice(course.price)}
+              {formatPrice(course.price)}
             </span>
             <span className="course-card-search__enrollment">
               {course.enrollments?.length || 0} Enrolled

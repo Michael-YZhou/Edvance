@@ -29,6 +29,12 @@ const LoadingSkeleton = () => {
 
         <div className="landing-skeleton__tags">
           {[1, 2, 3, 4].map((_, index) => (
+            <Skeleton key={index} className="landing-skeleton__tag" />
+          ))}
+        </div>
+
+        <div className="landing-skeleton__courses">
+          {[1, 2, 3, 4].map((_, index) => (
             <Skeleton key={index} className="landing-skeleton__course-card" />
           ))}
         </div>
@@ -46,6 +52,10 @@ function Landing() {
     router.push(`/course/${courseId}`);
   };
   console.log("courses", courses);
+
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
 
   return (
     <motion.div
