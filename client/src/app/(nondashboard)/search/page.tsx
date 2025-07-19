@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import { useGetCoursesQuery } from "@/state/api";
 import Loading from "@/components/loading";
-import { motion } from "framer-motion";
 import CourseCardSearch from "@/components/course-card-search";
+import SelectedCourse from "./SelectedCourse";
 
 function Search() {
   const searchParams = useSearchParams();
@@ -37,6 +38,14 @@ function Search() {
     router.push(`/search?id=${course.courseId}`);
   };
 
+  const handleEnrollNow = () => {
+    if (selectedCourse) {
+      router.push(
+        `/checkout?step=1&id=${selectedCourse.courseId}&showSignUp=false`
+      );
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -62,6 +71,20 @@ function Search() {
             />
           ))}
         </motion.div>
+
+        {selectedCourse && (
+          <motion.div
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="search__selected-course"
+          >
+            <SelectedCourse
+              course={selectedCourse}
+              handleEnrollNow={handleEnrollNow}
+            />
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
