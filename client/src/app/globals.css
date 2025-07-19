@@ -143,8 +143,11 @@ input[type="color"] {
 /* Component Classes */
 
 /* Search Page */
-.search {
+/* .search {
   @apply flex flex-col bg-background text-foreground h-full mx-auto w-3/4;
+} */
+.search {
+  @apply flex flex-col h-full mx-auto w-3/4;
 }
 
 .search__title {
@@ -1550,8 +1553,6 @@ input[type="color"] {
 .dashboard-navbar__sidebar-trigger {
   @apply text-customgreys-dirtyGrey hover:text-white-50 transition-colors;
 }
-
-
 
 @layer base {
   * {
