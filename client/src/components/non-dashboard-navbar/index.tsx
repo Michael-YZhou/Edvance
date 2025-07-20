@@ -1,9 +1,18 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { Bell } from "lucide-react";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 export default function NonDashboardNavbar() {
+  // this is the user object from Clerk that we use to get the user's info
+  const { user } = useUser();
+  // grab the user's role from the public usermetadata
+  const userRole = user?.publicMetadata?.userType as "student" | "teacher";
+
   return (
     <nav className="nondashboard-navbar">
       <div className="nondashboard-navbar__container">
@@ -37,7 +46,36 @@ export default function NonDashboardNavbar() {
             />
           </button>
 
-          {/* Signin Buttons */}
+          <SignedIn>
+            <UserButton
+              appearance={{
+                baseTheme: dark,
+                elements: {
+                  userButtonOuterIdentifier: "text-customgreys-dirtyGrey",
+                  userButtonBox: "scale-90 sm:scale-100",
+                },
+              }}
+              showName={true}
+              userProfileMode="navigation"
+              userProfileUrl={
+                userRole === "teacher" ? "/teacher/profile" : "/user/profile"
+              }
+            />
+          </SignedIn>
+          <SignedOut>
+            <Link
+              href="/signin"
+              className="nondashboard-navbar__auth-button--login"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/signup"
+              className="nondashboard-navbar__auth-button--signup"
+            >
+              Sign up
+            </Link>
+          </SignedOut>
         </div>
       </div>
     </nav>
