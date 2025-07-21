@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useCarousel } from "@/hooks/useCarousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCoursesQuery } from "@/state/api";
+import { useCarousel } from "@/hooks/useCarousel";
 import CourseCardSearch from "@/components/course-card-search";
 
 const LoadingSkeleton = () => {
@@ -51,7 +51,6 @@ function Landing() {
   const handleCourseClick = (courseId: string) => {
     router.push(`/course/${courseId}`);
   };
-  console.log("courses", courses);
 
   if (isLoading) {
     return <LoadingSkeleton />;
