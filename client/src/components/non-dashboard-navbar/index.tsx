@@ -53,6 +53,11 @@ export default function NonDashboardNavbar() {
                 elements: {
                   userButtonOuterIdentifier: "text-customgreys-dirtyGrey",
                   userButtonBox: "scale-90 sm:scale-100",
+                  userButtonPopoverFooter: {
+                    "& > div:nth-child(1) > div:nth-child(1)": {
+                      background: "none",
+                    },
+                  },
                 },
               }}
               showName={true}
