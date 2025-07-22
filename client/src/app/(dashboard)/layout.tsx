@@ -24,6 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="dashboard__content">
           {/* chapter sidebar goes here */}
           <div className={cn("dashboard__main")} style={{ height: "100vh" }}>
+            <DashboardNavbar />
             <main className="dashboard__body">{children}</main>
           </div>
         </div>
