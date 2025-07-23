@@ -1,15 +1,15 @@
 import React from "react";
 import SharedNotificationSettings from "@/components/shared-notification-settings";
 
-const UserSettings = () => {
+const TeacherSettings = () => {
   return (
     <div className="w-3/5">
       <SharedNotificationSettings
-        title="Notification Settings"
-        subtitle="Manage your notification settings"
+        title="Teacher Notification Settings"
+        subtitle="Manage your teacher notification settings"
       />
     </div>
   );
 };
 
-export default UserSettings;
+export default TeacherSettings;
