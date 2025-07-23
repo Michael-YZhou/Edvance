@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BaseQueryApi, FetchArgs } from "@reduxjs/toolkit/query";
+import { User } from "@clerk/nextjs/server";
 
 /*
  * This is a custom base query that is used to handle the error and success messages
@@ -38,8 +39,16 @@ export const api = createApi({
   // }), // if you want to use the default base query
   baseQuery: customBaseQuery, // this is the custom base query used across all endpoints
   reducerPath: "api",
-  tagTypes: ["Courses"],
+  tagTypes: ["Courses", "Users"],
   endpoints: (builder) => ({
+    updateUser: builder.mutation<User, Partial<User> & { userId: string }>({
+      query: ({ userId, ...userData }) => ({
+        url: `users/clerk/${userId}`,
+        method: "PUT",
+        body: userData,
+      }),
+      invalidatesTags: ["Users"],
+    }),
     getCourses: builder.query<Course[], { category?: string }>({
       query: ({ category }) => ({
         url: "courses",
@@ -56,4 +65,5 @@ export const api = createApi({
   }),
 });
 
-export const { useGetCoursesQuery, useGetCourseQuery } = api;
+export const { useUpdateUserMutation, useGetCoursesQuery, useGetCourseQuery } =
+  api;
