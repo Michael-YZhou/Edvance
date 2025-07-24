@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BaseQueryApi, FetchArgs } from "@reduxjs/toolkit/query";
 import { User } from "@clerk/nextjs/server";
+import { toast } from "sonner";
 // import { Clerk } from "@clerk/clerk-js";
 
 /*
@@ -28,9 +29,33 @@ const customBaseQuery = async (
     // this is the default base query, can be replaced with fetchBaseQuery or custom Axios query function if needed
     const result: any = await baseQuery(args, api, extraOptions);
 
+    if (result.error) {
+      const errorData = result.error.data;
+      const errorMessage =
+        errorData?.message ||
+        result.error.status.toString() ||
+        "An unknown error occurred";
+      toast.error(`Error: ${errorMessage}`);
+    }
+
+    // only show the success message for mutation requests
+    const isMutationRequest =
+      (args as FetchArgs).method && (args as FetchArgs).method !== "GET";
+
+    if (isMutationRequest) {
+      const successMessage = result.data?.message;
+      if (successMessage) toast.success(successMessage);
+    }
+
     // if success, unwraps the data from the result
     if (result.data) {
       result.data = result.data.data;
+    } else if (
+      // if the response is 204 or 24 (no content), return null
+      result.error?.status === 204 ||
+      result.meta?.response.status === 24
+    ) {
+      return { data: null };
     }
     return result;
   } catch (error: unknown) {
