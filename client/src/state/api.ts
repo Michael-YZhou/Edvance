@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BaseQueryApi, FetchArgs } from "@reduxjs/toolkit/query";
 import { User } from "@clerk/nextjs/server";
+// import { Clerk } from "@clerk/clerk-js";
 
 /*
  * This is a custom base query that is used to handle the error and success messages
@@ -14,6 +15,13 @@ const customBaseQuery = async (
 ) => {
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    prepareHeaders: async (headers) => {
+      const token = await window.Clerk?.session?.getToken(); // get the token from the currently active clerk session
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`); // set the token in the headers for every request
+      }
+      return headers;
+    },
   });
 
   try {
