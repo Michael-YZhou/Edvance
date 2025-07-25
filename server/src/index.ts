@@ -13,6 +13,7 @@ import {
 /* ROUTE IMPORTS */
 import courseRoutes from "./routes/courseRoutes";
 import userClerkRoutes from "./routes/userClerkRoutes";
+import transactionRoutes from "./routes/transactionRoutes";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -44,7 +45,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/courses", courseRoutes);
-app.use("/users/clerk", requireAuth(), userClerkRoutes); // protect the userClerkRoutes route with clerk auth
+app.use("/users/clerk", requireAuth(), userClerkRoutes); // protect routes with clerk auth
+app.use("/transactions", requireAuth(), transactionRoutes); // protect routes with clerk auth
 
 /* SERVER */
 const PORT = process.env.PORT || 3000;
