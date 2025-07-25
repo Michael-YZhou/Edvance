@@ -5,12 +5,27 @@ import Loading from "@/components/loading";
 import { useCurrentCourse } from "@/hooks/useCurrentCourse";
 import { useSearchParams } from "next/navigation";
 import CoursePreview from "@/components/course-preview";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { GuestFormData, guestSchema } from "@/lib/schemas";
+import { Form } from "@/components/ui/form";
+import { CustomFormField } from "@/components/CustomFormField";
+import { Button } from "@/components/ui/button";
 
 const CheckoutDetails = () => {
   const { course: selectedCourse, isLoading, isError } = useCurrentCourse();
   // Determine if the user should be shown the sign up form or the sign in form based on the showSignUp parameter
   const searchParams = useSearchParams();
   const showSignUp = searchParams.get("showSignUp") === "true";
+
+  //***** Form for guest checkout (not functional yet) *****/
+  const methods = useForm<GuestFormData>({
+    resolver: zodResolver(guestSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+  //********************************************************/
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Failed to fetch course data</div>;
@@ -22,6 +37,38 @@ const CheckoutDetails = () => {
         <div className="checkout-details__preview">
           <CoursePreview course={selectedCourse} />
         </div>
+
+        {/* Form for guest checkout (not functional yet) */}
+        <div className="checkout-details__options">
+          <div className="checkout-details__guest">
+            <h2 className="checkout-details__title">Guest Checkout</h2>
+            <p className="checkout-details__subtitle">
+              Enter email to receive course access details and order
+              confirmation. You can create an account after purchase.
+            </p>
+            <Form {...methods}>
+              <form
+                onSubmit={methods.handleSubmit((data) => {
+                  console.log(data);
+                })}
+                className="checkout-details__form"
+              >
+                <CustomFormField
+                  name="Email"
+                  label="Email address"
+                  type="email"
+                  className="w-full rounded mt-4"
+                  labelClassName="font-normal text-white-50"
+                  inputClassName="py-3"
+                ></CustomFormField>
+                <Button type="submit" className="checkout-details__submit">
+                  Continue as Guest
+                </Button>
+              </form>
+            </Form>
+          </div>
+        </div>
+        {/************************************************/}
       </div>
     </div>
   );
