@@ -10,12 +10,12 @@ const WizardStepper = ({ currentStep }: WizardStepperProps) => {
           <Fragment key={step}>
             <div className="wizard-stepper__step">
               <div
-                className={cn("wizzard-stepper__circle", {
-                  "wizzard-stepper__circle--completed":
+                className={cn("wizard-stepper__circle", {
+                  "wizard-stepper__circle--completed":
                     currentStep >= step || (currentStep === 3 && step === 3),
-                  "wizzard-stepper__circle--current":
+                  "wizard-stepper__circle--current":
                     currentStep === step && step !== 3,
-                  "wizzard-stepper__circle--upcoming": currentStep < step,
+                  "wizard-stepper__circle--upcoming": currentStep < step,
                 })}
               >
                 {currentStep > step || (currentStep === 3 && step === 3) ? (
@@ -26,12 +26,12 @@ const WizardStepper = ({ currentStep }: WizardStepperProps) => {
               </div>
               <p
                 className={cn(
-                  "wizzard-stepper__text",
+                  "wizard-stepper__text",
                   { "wizard-stepper__text--active": currentStep >= step },
                   { "wizard-stepper__text--inactive": currentStep < step }
                 )}
               >
-                {step === 1 && "Shipping"}
+                {step === 1 && "Details"}
                 {step === 2 && "Payment"}
                 {step === 3 && "Completion"}
               </p>
@@ -39,7 +39,7 @@ const WizardStepper = ({ currentStep }: WizardStepperProps) => {
             {index < 2 && (
               <div
                 className={cn(
-                  "wizzard-stepper__line",
+                  "wizard-stepper__line",
                   { "wizard-stepper__line--completed": currentStep > step },
                   { "wizard-stepper__line--incomplete": currentStep <= step }
                 )}

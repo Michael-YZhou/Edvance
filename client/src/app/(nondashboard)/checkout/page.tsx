@@ -1,8 +1,11 @@
+"use client";
+
 import React from "react";
 import Loading from "@/components/loading";
 import { useUser } from "@clerk/nextjs";
-import WizardStepper from "@/components/wizard-step";
+import WizardStepper from "@/components/wizard-stepper";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
+import CheckoutDetails from "./checkout-details";
 
 /**
  * Checkout Wizard component
@@ -21,8 +24,8 @@ const CheckoutWizard = () => {
   const renderStep = (checkoutStep: number) => {
     switch (checkoutStep) {
       case 1:
-        // return <CheckoutDetails />;
-        return <div>Checkout Details</div>;
+        return <CheckoutDetails />;
+      // return <div>Checkout Details</div>;
       case 2:
         // return <Payment />;
         return <div>Payment</div>;
