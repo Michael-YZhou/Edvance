@@ -11,6 +11,8 @@ import { GuestFormData, guestSchema } from "@/lib/schemas";
 import { Form } from "@/components/ui/form";
 import { CustomFormField } from "@/components/CustomFormField";
 import { Button } from "@/components/ui/button";
+import SignUpComponent from "@/components/signup";
+import SignInComponent from "@/components/signin";
 
 const CheckoutDetails = () => {
   const { course: selectedCourse, isLoading, isError } = useCurrentCourse();
@@ -18,14 +20,14 @@ const CheckoutDetails = () => {
   const searchParams = useSearchParams();
   const showSignUp = searchParams.get("showSignUp") === "true";
 
-  //***** Form for guest checkout (not functional yet) *****/
+  //***** methods for guest checkout (not functional yet) *****/
   const methods = useForm<GuestFormData>({
     resolver: zodResolver(guestSchema),
     defaultValues: {
       email: "",
     },
   });
-  //********************************************************/
+  //************************************************************/
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Failed to fetch course data</div>;
@@ -67,8 +69,17 @@ const CheckoutDetails = () => {
               </form>
             </Form>
           </div>
+          {/* Divider between guest and signed in checkout */}
+          <div className="checkout-details__divider">
+            <hr className="checkout-details__divider-line" />
+            <span className="checkout-details__divider-text">Or</span>
+            <hr className="checkout-details__divider-line" />
+          </div>
+          {/* Form for signed in user checkout */}
+          <div className="checkout-details__auth">
+            {showSignUp ? <SignUpComponent /> : <SignInComponent />}
+          </div>
         </div>
-        {/************************************************/}
       </div>
     </div>
   );
