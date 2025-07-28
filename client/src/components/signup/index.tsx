@@ -10,7 +10,7 @@ const SignUpComponent = () => {
   const { user } = useUser();
   const searchParams = useSearchParams();
   // this is the url param that we use to check if the user is on the checkout page
-  const isCheckoutPage = searchParams.get("showSignup") !== null;
+  const isCheckoutPage = searchParams.get("showSignUp") !== null;
   const courseId = searchParams.get("id");
 
   // if the user is on the checkout page, we let them stay on the checkout page
@@ -25,7 +25,7 @@ const SignUpComponent = () => {
   // otherwise, we redirect them to the courses page based on their user type
   const getRedirectUrl = () => {
     if (isCheckoutPage) {
-      return `/checkout?step=2&id=${courseId}`;
+      return `/checkout?step=2&id=${courseId}&showSignUp=false`;
     }
     const userType = user?.publicMetadata?.userType as string;
     if (userType === "teacher") {
