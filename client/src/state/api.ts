@@ -95,6 +95,7 @@ export const api = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Courses", id }],
     }),
+    // This endpoint takes the price and returns the client secret for the frontend to use in the stripe provider component
     createStripePaymentIntent: builder.mutation<
       { clientSecret: string },
       { amount: number }
