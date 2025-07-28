@@ -66,6 +66,15 @@ const PaymentPageContent = () => {
     }
   };
 
+  /**
+   * Handles the sign out and navigation to the checkout step.
+   * @returns void
+   */
+  const handleSignOutAndNavigate = async () => {
+    await signOut();
+    navigateToStep(1);
+  };
+
   if (!course) return null;
 
   return (
@@ -108,7 +117,7 @@ const PaymentPageContent = () => {
       <div className="payment__actions">
         <Button
           className="bg-transparent hover:bg-white-50/10 hover:text-white-50"
-          // onClick={handleSignOutandNavigate}
+          onClick={handleSignOutAndNavigate}
           variant="outline"
           type="button"
         >
