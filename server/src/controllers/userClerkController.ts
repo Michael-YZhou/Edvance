@@ -14,7 +14,7 @@ export const updateUser = async (
         settings: userData.publicMetadata.settings,
       },
     });
-    res.status(200).json({ message: "User updated successfully", data: user });
+    res.json({ message: "User updated successfully", data: user });
   } catch (error) {
     res.status(500).json({ message: "Error updating user", error: error });
   }
