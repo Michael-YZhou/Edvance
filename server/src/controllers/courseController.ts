@@ -14,9 +14,7 @@ export const listCourses = async (
           await Course.scan("category").eq(category).exec()
         : // if category is not provided, scan the entire table and return all courses
           await Course.scan().exec();
-    res
-      .status(200)
-      .json({ message: "courses retrieved successfully", data: courses });
+    res.json({ message: "courses retrieved successfully", data: courses });
   } catch (error) {
     res.status(500).json({ message: "Error retriving courses", error: error });
   }
@@ -31,9 +29,7 @@ export const getCourse = async (req: Request, res: Response): Promise<void> => {
       res.status(404).json({ message: "Course not found" });
       return;
     }
-    res
-      .status(200)
-      .json({ message: "course retrieved successfully", data: course });
+    res.json({ message: "course retrieved successfully", data: course });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving course", error: error });
   }
