@@ -11,6 +11,8 @@ import { useClerk, useUser } from "@clerk/nextjs";
 import CoursePreview from "@/components/course-preview";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCreateTransactionMutation } from "@/state/api";
+import { toast } from "sonner";
 
 const PaymentPageContent = () => {
   // this is the stripe object that we use to interact with the stripe api
@@ -18,11 +20,60 @@ const PaymentPageContent = () => {
   // they are only available when we wrap the stripe provider component around the payment page
   const stripe = useStripe();
   const elements = useElements();
-  // const [createTransaction] = useCreateTransactionMutation();
+  const [createTransaction] = useCreateTransactionMutation();
   const { navigateToStep } = useCheckoutNavigation();
   const { course, courseId } = useCurrentCourse();
   const { user } = useUser();
   const { signOut } = useClerk();
+
+  /**
+   * Handles the submission of the payment form.
+   * @param e - The form event.
+   * @returns void
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!stripe || !elements) {
+      toast.error("Stripe payment service is not available");
+      return;
+    }
+
+    const result = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL}?id=${courseId}`,
+      },
+      redirect: "if_required",
+    });
+    if (result.paymentIntent?.status === "succeeded") {
+      const transactionData: Partial<Transaction> = {
+        userId: user?.id,
+        courseId,
+        transactionId: result.paymentIntent.id,
+        amount: course?.price || 0,
+        paymentProvider: "stripe",
+      };
+      // create the transaction in the database
+      const { data, error } = await createTransaction(transactionData);
+      if (error) {
+        toast.error("Failed to create Stripe transaction");
+      }
+      if (data) {
+        toast.success("Stripe transaction created successfully");
+        // navigate to the checkout completion step (step 3)
+        navigateToStep(3);
+      }
+    }
+  };
+
+  /**
+   * Handles the sign out and navigation to the checkout step.
+   * @returns void
+   */
+  const handleSignOutAndNavigate = async () => {
+    await signOut();
+    navigateToStep(1);
+  };
 
   if (!course) return null;
 
@@ -38,7 +89,7 @@ const PaymentPageContent = () => {
           <form
             id="payment-form"
             className="payment__form"
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit}
           >
             <div className="payment__content">
               <h1 className="payment__title">Checkout</h1>
@@ -66,7 +117,7 @@ const PaymentPageContent = () => {
       <div className="payment__actions">
         <Button
           className="bg-transparent hover:bg-white-50/10 hover:text-white-50"
-          // onClick={handleSignOutandNavigate}
+          onClick={handleSignOutAndNavigate}
           variant="outline"
           type="button"
         >
