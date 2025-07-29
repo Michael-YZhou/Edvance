@@ -60,7 +60,7 @@ export const createTransaction = async (
 
     // create transaction record in the database
     const newTransaction = new Transaction({
-      dataTime: new Date().toISOString(),
+      dateTime: new Date().toISOString(),
       userId,
       courseId,
       transactionId,
@@ -82,7 +82,7 @@ export const createTransaction = async (
           completed: false,
         })),
       })),
-      lastAccessed: new Date().toISOString(),
+      lastAccessedTimestamp: new Date().toISOString(),
     });
     await initialProgress.save();
 
@@ -104,11 +104,9 @@ export const createTransaction = async (
       },
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error creating transaction and enrollment",
-        error: error,
-      });
+    res.status(500).json({
+      message: "Error creating transaction and enrollment",
+      error: error,
+    });
   }
 };
