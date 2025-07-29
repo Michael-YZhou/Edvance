@@ -222,8 +222,11 @@ input[type="color"] {
 
 /* Completion Page */
 .completion {
-  @apply flex flex-col h-full items-center justify-center bg-background text-foreground;
+  @apply flex flex-col h-full items-center justify-center;
 }
+/* .completion {
+  @apply flex flex-col h-full items-center justify-center bg-background text-foreground;
+} */
 
 .completion__content {
   @apply text-center;

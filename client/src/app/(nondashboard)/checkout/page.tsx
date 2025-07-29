@@ -7,6 +7,7 @@ import WizardStepper from "@/components/wizard-stepper";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
 import CheckoutDetails from "./checkout-details";
 import PaymentPage from "./payment";
+import CompletionPage from "./completion";
 
 /**
  * Checkout Wizard component
@@ -26,14 +27,12 @@ const CheckoutWizard = () => {
     switch (checkoutStep) {
       case 1:
         return <CheckoutDetails />;
-      // return <div>Checkout Details</div>;
       case 2:
         return <PaymentPage />;
       case 3:
-        // return <Completion />;
-        return <div>Completion</div>;
+        return <CompletionPage />;
       default:
-        return <div>Checkout Details</div>;
+        return <CheckoutDetails />;
     }
   };
 
