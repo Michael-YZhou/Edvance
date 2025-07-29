@@ -16,6 +16,27 @@ if (!process.env.STRIPE_SECRET_KEY) {
 // create a new stripe instance
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+export const listTransactions = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { userId } = req.query;
+
+  try {
+    const transactions = userId
+      ? await Transaction.query("userId").eq(userId).exec()
+      : await Transaction.scan().exec();
+    res.json({
+      message: "Transactions retrieved successfully",
+      data: transactions,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving transactions", error: error });
+  }
+};
+
 export const createStripePaymentIntent = async (
   req: Request,
   res: Response
@@ -35,7 +56,7 @@ export const createStripePaymentIntent = async (
         allow_redirects: "never",
       },
     });
-    res.status(200).json({
+    res.json({
       message: "",
       data: {
         clientSecret: paymentIntent.client_secret,
