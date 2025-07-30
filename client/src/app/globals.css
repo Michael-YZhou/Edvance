@@ -514,7 +514,7 @@ input[type="color"] {
 }
 
 .billing__select-item {
-  @apply hover:!bg-white-50 hover:!text-customgreys-primarybg cursor-pointer;
+  @apply text-white-50 hover:!bg-white-50 hover:!text-customgreys-primarybg cursor-pointer;
 }
 
 .billing__grid {
