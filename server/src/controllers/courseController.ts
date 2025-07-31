@@ -3,7 +3,12 @@ import Course from "../models/courseModel";
 import { v4 as uuidv4 } from "uuid";
 import { getAuth } from "@clerk/express";
 
-/* List all courses */
+/**
+ * List all courses
+ * @param req - The request object
+ * @param res - The response object
+ * @returns A list of courses
+ */
 export const listCourses = async (
   req: Request,
   res: Response
@@ -22,7 +27,12 @@ export const listCourses = async (
   }
 };
 
-/* Get a single course */
+/**
+ * Get a single course
+ * @param req - The request object
+ * @param res - The response object
+ * @returns A single course
+ */
 export const getCourse = async (req: Request, res: Response): Promise<void> => {
   const { courseId } = req.params;
   try {
@@ -50,9 +60,7 @@ export const createCourse = async (
       return;
     }
 
-    // create a local instance of a new course with default values
-    // do not save it to the database yet until the user confirms the course details and click save draft
-    // do not use Course.create({...}) because it will save the course to the database immediately
+    // create an instance of a new course with default values
     const newCourse = new Course({
       id: uuidv4(),
       teacherId,
@@ -75,6 +83,12 @@ export const createCourse = async (
   }
 };
 
+/**
+ * Update a course
+ * @param req - The request object
+ * @param res - The response object
+ * @returns A message indicating the course was updated successfully
+ */
 export const updateCourse = async (
   req: Request,
   res: Response
@@ -125,8 +139,8 @@ export const updateCourse = async (
     }
 
     // update the course with the new data by using the Object.assign() method
-    // it will overwrite the existing course data with the new data
-    // and add the new data to the course
+    // it will overwrite the existing fields with the new data
+    // and add any extra fields to the course
     Object.assign(course, updateData);
     // save the updated course to the database
     await course.save();
@@ -134,5 +148,35 @@ export const updateCourse = async (
     res.json({ message: "Course updated successfully", data: course });
   } catch (error) {
     res.status(500).json({ message: "Error updating course", error: error });
+  }
+};
+
+export const deleteCourse = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { courseId } = req.params;
+  const userId = getAuth(req); // The getAuth() helper retrieves authentication state from the request object.
+
+  try {
+    // get the current course info from the database and apply save checks
+    const course = await Course.get(courseId);
+
+    if (!course) {
+      res.status(404).json({ message: "Course not found" });
+      return;
+    }
+
+    if (course.teacherId !== userId) {
+      res.status(403).json({ message: "Not authorized to delete this course" });
+      return;
+    }
+
+    // delete the course from the database
+    const deletedCourse = await course.delete();
+
+    res.json({ message: "course deleted successfully", data: deletedCourse });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting course", error: error });
   }
 };
