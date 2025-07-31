@@ -74,6 +74,11 @@ export const api = createApi({
   reducerPath: "api",
   tagTypes: ["Courses", "Users"],
   endpoints: (builder) => ({
+    /* 
+    ===============
+    USER CLERK
+    =============== 
+    */
     updateUser: builder.mutation<User, Partial<User> & { userId: string }>({
       query: ({ userId, ...userData }) => ({
         url: `users/clerk/${userId}`,
@@ -82,6 +87,11 @@ export const api = createApi({
       }),
       invalidatesTags: ["Users"],
     }),
+    /* 
+    ===============
+    COURSES
+    =============== 
+    */
     getCourses: builder.query<Course[], { category?: string }>({
       query: ({ category }) => ({
         url: "courses",
@@ -95,6 +105,42 @@ export const api = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Courses", id }],
     }),
+    createCourse: builder.mutation<
+      Course,
+      { teacherId: string; teacherName: string }
+    >({
+      query: (body) => ({
+        url: `courses`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Courses"],
+    }),
+    updateCourse: builder.mutation<
+      Course,
+      { courseId: string; formData: FormData }
+    >({
+      query: ({ courseId, formData }) => ({
+        url: `courses/${courseId}`,
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: (result, error, { courseId }) => [
+        { type: "Courses", id: courseId },
+      ],
+    }),
+    deleteCourse: builder.mutation<{ message: string }, string>({
+      query: (courseId) => ({
+        url: `courses/${courseId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Courses"],
+    }),
+    /* 
+    ===============
+    TRANSACTIONS
+    =============== 
+    */
     getTransactions: builder.query<Transaction[], string>({
       query: (userId) => ({
         url: `transactions`,
@@ -126,6 +172,9 @@ export const {
   useUpdateUserMutation,
   useGetCoursesQuery,
   useGetCourseQuery,
+  useCreateCourseMutation,
+  useUpdateCourseMutation,
+  useDeleteCourseMutation,
   useGetTransactionsQuery,
   useCreateStripePaymentIntentMutation,
   useCreateTransactionMutation,
