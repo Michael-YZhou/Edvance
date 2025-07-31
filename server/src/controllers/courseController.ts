@@ -173,9 +173,9 @@ export const deleteCourse = async (
     }
 
     // delete the course from the database
-    const deletedCourse = await course.delete();
+    await course.delete();
 
-    res.json({ message: "course deleted successfully", data: deletedCourse });
+    res.json({ message: "course deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting course", error: error });
   }
