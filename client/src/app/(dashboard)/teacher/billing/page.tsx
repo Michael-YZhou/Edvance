@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { formatPrice } from "@/lib/utils";
 
-const UserBilling = () => {
+const TeacherBilling = () => {
   const [paymentType, setPaymentType] = useState("all");
   const { user, isLoaded } = useUser();
   const { data: transactions, isLoading: isLoadingTransactions } =
@@ -116,4 +116,4 @@ const UserBilling = () => {
   );
 };
 
-export default UserBilling;
+export default TeacherBilling;
