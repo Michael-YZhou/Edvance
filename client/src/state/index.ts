@@ -34,11 +34,13 @@ export const globalSlice = createSlice({
         chapterIndex: number | null;
       }>
     ) => {
+      // when opening the chapter modal, we need to track the selected section and chapter index
       state.courseEditor.isChapterModalOpen = true;
       state.courseEditor.selectedSectionIndex = action.payload.sectionIndex;
       state.courseEditor.selectedChapterIndex = action.payload.chapterIndex;
     },
     closeChapterModal: (state) => {
+      // when closing the modal, we need to reset the selected section and chapter index to null
       state.courseEditor.isChapterModalOpen = false;
       state.courseEditor.selectedSectionIndex = null;
       state.courseEditor.selectedChapterIndex = null;
