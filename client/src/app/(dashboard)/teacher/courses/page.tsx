@@ -2,6 +2,7 @@
 
 import Header from "@/components/header";
 import Loading from "@/components/loading";
+import TeacherCourseCard from "@/components/teacher-course-card";
 import Toolbar from "@/components/toolbar";
 import { Button } from "@/components/ui/button";
 import {
@@ -89,6 +90,18 @@ const Courses = () => {
         onSearch={setSearchTerm}
         onCategoryChange={setSelectedCategory}
       />
+      {/* Display all courses */}
+      <div className="teacher-courses__grid">
+        {filteredCourses.map((course) => (
+          <TeacherCourseCard
+            key={course.courseId}
+            course={course}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isOwner={course.teacherId === user?.id}
+          />
+        ))}
+      </div>
     </div>
   );
 };
