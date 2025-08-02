@@ -62,7 +62,7 @@ export const createCourse = async (
 
     // create an instance of a new course with default values
     const newCourse = new Course({
-      id: uuidv4(),
+      courseId: uuidv4(),
       teacherId,
       teacherName,
       title: "Untitled Course",
