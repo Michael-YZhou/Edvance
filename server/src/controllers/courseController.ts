@@ -62,7 +62,7 @@ export const createCourse = async (
 
     // create an instance of a new course with default values
     const newCourse = new Course({
-      id: uuidv4(),
+      courseId: uuidv4(),
       teacherId,
       teacherName,
       title: "Untitled Course",
@@ -95,7 +95,7 @@ export const updateCourse = async (
 ): Promise<void> => {
   const { courseId } = req.params;
   const updateData = { ...req.body };
-  const userId = getAuth(req); // The getAuth() helper retrieves authentication state from the request object.
+  const { userId } = getAuth(req); // The getAuth() helper retrieves authentication state from the request object.
 
   try {
     const course = await Course.get(courseId); // get the current course info from the database
