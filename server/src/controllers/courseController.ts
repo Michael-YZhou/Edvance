@@ -95,7 +95,7 @@ export const updateCourse = async (
 ): Promise<void> => {
   const { courseId } = req.params;
   const updateData = { ...req.body };
-  const userId = getAuth(req); // The getAuth() helper retrieves authentication state from the request object.
+  const { userId } = getAuth(req); // The getAuth() helper retrieves authentication state from the request object.
 
   try {
     const course = await Course.get(courseId); // get the current course info from the database
