@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ReactPlayer from "react-player";
-import Loading from "@/components/Loading";
+import Loading from "@/components/loading";
 import { useCourseProgressData } from "@/hooks/useCourseProgressData";
 
 const Course = () => {
