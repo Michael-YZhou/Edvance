@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, ComponentRef } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -23,7 +23,7 @@ const Course = () => {
   } = useCourseProgressData();
   console.log("currentChapter.video:", currentChapter);
 
-  const playerRef = useRef<ReactPlayer>(null);
+  const playerRef = useRef<ComponentRef<typeof ReactPlayer>>(null);
 
   const handleProgress = ({ played }: { played: number }) => {
     if (
@@ -79,7 +79,7 @@ const Course = () => {
               <ReactPlayer
                 ref={playerRef}
                 url={currentChapter.video as string}
-                controls
+                controls={true}
                 width="100%"
                 height="100%"
                 onProgress={handleProgress}
@@ -160,10 +160,12 @@ const Course = () => {
                   <h4 className="course__instructor-name">
                     {course.teacherName}
                   </h4>
-                  <p className="course__instructor-title">Senior UX Designer</p>
+                  <p className="course__instructor-title text-white-50">
+                    Senior UX Designer
+                  </p>
                 </div>
               </div>
-              <div className="course__instructor-bio">
+              <div className="course__instructor-bio text-white-50">
                 <p>
                   A seasoned Senior UX Designer with over 15 years of experience
                   in creating intuitive and engaging digital experiences.

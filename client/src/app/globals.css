@@ -665,7 +665,7 @@ input[type="color"] {
 }
 
 .course__tabs-list {
-  @apply flex justify-start gap-10;
+  @apply flex justify-start gap-10 bg-transparent text-white-50;
 }
 
 .course__tab {
@@ -677,7 +677,7 @@ input[type="color"] {
 }
 
 .course__tab-card {
-  @apply !border-none shadow-none;
+  @apply !border-none shadow-none bg-transparent text-white-50;
 }
 
 .course__tab-header {
