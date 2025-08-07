@@ -23,7 +23,7 @@ const CourseCard = ({ course, onGoToCourse }: CourseCardProps) => {
         />
       </CardHeader>
       <CardContent className="course-card__content">
-        <CardTitle className="course-card__title">
+        <CardTitle className="course-card__title text-white-50">
           {course.title}: {course.description}
         </CardTitle>
 

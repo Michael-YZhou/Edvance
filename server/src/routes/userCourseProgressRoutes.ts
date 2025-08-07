@@ -7,7 +7,7 @@ import {
 
 const router = express.Router();
 
-router.post("/:userId/enrolled-courses", getUserEnrolledCourses);
+router.get("/:userId/enrolled-courses", getUserEnrolledCourses);
 router.get("/:userId/courses/:courseId", getUserCourseProgress);
 router.post("/:userId/courses/:courseId", updateUserCourseProgress);
 
