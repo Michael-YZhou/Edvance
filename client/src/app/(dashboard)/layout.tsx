@@ -34,7 +34,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AppSidebar />
         <div className="dashboard__content">
           {courseId && <ChaptersSidebar />}
-          <div className={cn("dashboard__main")} style={{ height: "100vh" }}>
+          <div
+            className={cn(
+              "dashboard__main",
+              isCoursePage && "dashboard__main--not-course"
+            )}
+            style={{ height: "100vh" }}
+          >
             <DashboardNavbar isCoursePage={isCoursePage} />
             <main className="dashboard__body">{children}</main>
           </div>
