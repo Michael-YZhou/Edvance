@@ -206,6 +206,16 @@ declare global {
     coursePrice: string;
     courseStatus: boolean;
   }
+
+  // This is a global interface that is used to type the Clerk object in the window object.
+  // This is needed because the Clerk object is not typed in the Clerk library.
+  interface Window {
+    Clerk?: {
+      session?: {
+        getToken(): Promise<string | null>;
+      };
+    };
+  }
 }
 
 export {};
