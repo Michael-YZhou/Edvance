@@ -112,7 +112,10 @@ const ChapterModal = () => {
         </div>
 
         <Form {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="chapter-modal__form"
+          >
             <CustomFormField
               name="title"
               label="Chapter Title"
@@ -135,17 +138,7 @@ const ChapterModal = () => {
                     Chapter Video
                   </FormLabel>
                   <FormControl>
-                    <>
-                      {typeof value === "string" && value && (
-                        <div className="mb-2 text-sm text-customgreys-dirtyGrey">
-                          Current Video: {value.split("/").pop()}
-                        </div>
-                      )}
-                      {value instanceof File && (
-                        <div className="mb-2 text-sm text-customgreys-dirtyGrey">
-                          Selected file: {value.name}
-                        </div>
-                      )}
+                    <div>
                       <Input
                         type="file"
                         accept="video/*"
@@ -155,11 +148,21 @@ const ChapterModal = () => {
                             onChange(file);
                           }
                         }}
-                        className="border-none bg-customgreys-darkGrey p-4"
+                        className="border-none bg-customgreys-darkGrey py-2 cursor-pointer"
                       />
-                    </>
+                      {typeof value === "string" && value && (
+                        <div className="my-2 text-sm text-gray-600">
+                          Current Video: {value.split("/").pop()}
+                        </div>
+                      )}
+                      {value instanceof File && (
+                        <div className="my-2 text-sm text-gray-600">
+                          Selected file: {value.name}
+                        </div>
+                      )}
+                    </div>
                   </FormControl>
-                  <FormMessage className="border-none bg-customgreys-darkGrey p-4" />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
