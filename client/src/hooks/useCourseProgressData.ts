@@ -13,6 +13,7 @@ export const useCourseProgressData = () => {
   const [hasMarkedComplete, setHasMarkedComplete] = useState(false);
   const [updateProgress] = useUpdateUserCourseProgressMutation();
 
+  // Get the course data
   const { data: course, isLoading: courseLoading } = useGetCourseQuery(
     (courseId as string) ?? "",
     {
@@ -20,6 +21,7 @@ export const useCourseProgressData = () => {
     }
   );
 
+  // Get the user's course progress
   const { data: userProgress, isLoading: progressLoading } =
     useGetUserCourseProgressQuery(
       {
@@ -31,8 +33,10 @@ export const useCourseProgressData = () => {
       }
     );
 
+  // check if the course is loading (user is loaded, course is loading, progress is loading)
   const isLoading = !isLoaded || courseLoading || progressLoading;
 
+  // Get the current section and chapter from the course data
   const currentSection = course?.sections.find((s) =>
     s.chapters.some((c) => c.chapterId === chapterId)
   );
@@ -41,6 +45,7 @@ export const useCourseProgressData = () => {
     (c) => c.chapterId === chapterId
   );
 
+  // Check if the current chapter is completed
   const isChapterCompleted = () => {
     if (!currentSection || !currentChapter || !userProgress?.sections)
       return false;
@@ -55,6 +60,7 @@ export const useCourseProgressData = () => {
     );
   };
 
+  // update the chapter progress when the user completes it
   const updateChapterProgress = (
     sectionId: string,
     chapterId: string,

@@ -29,6 +29,7 @@ const ChaptersSidebar = () => {
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
+  // close the sidebar when the component mounts
   useEffect(() => {
     setOpen(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -37,6 +38,7 @@ const ChaptersSidebar = () => {
   if (!user) return <div>Please sign in to view course progress.</div>;
   if (!course || !userProgress) return <div>Error loading course content</div>;
 
+  // toggle the section when the user clicks on the section title
   const toggleSection = (sectionTitle: string) => {
     setExpandedSections((prevSections) =>
       prevSections.includes(sectionTitle)
@@ -45,6 +47,7 @@ const ChaptersSidebar = () => {
     );
   };
 
+  // navigate to the selected chapter when the user clicks on the chapter title
   const handleChapterClick = (sectionId: string, chapterId: string) => {
     router.push(`/user/courses/${courseId}/chapters/${chapterId}`, {
       scroll: false,
@@ -77,6 +80,7 @@ const ChaptersSidebar = () => {
   );
 };
 
+// Section component
 const Section = ({
   section,
   index,
