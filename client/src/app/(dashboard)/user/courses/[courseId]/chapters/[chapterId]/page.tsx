@@ -25,7 +25,29 @@ const Course = () => {
 
   const playerRef = useRef<ComponentRef<typeof ReactPlayer>>(null);
 
-  const handleProgress = ({ played }: { played: number }) => {
+  // const handleProgress = ({ played }: { played: number }) => {
+  //   if (
+  //     played >= 0.8 &&
+  //     !hasMarkedComplete &&
+  //     currentChapter &&
+  //     currentSection &&
+  //     userProgress?.sections &&
+  //     !isChapterCompleted()
+  //   ) {
+  //     setHasMarkedComplete(true);
+  //     updateChapterProgress(
+  //       currentSection.sectionId,
+  //       currentChapter.chapterId,
+  //       true
+  //     );
+  //   }
+  // };
+
+  const handleTimeUpdate: React.ReactEventHandler<HTMLVideoElement> = (e) => {
+    const el = e.currentTarget;
+    const duration = el.duration || 0;
+    const played = duration ? el.currentTime / duration : 0;
+
     if (
       played >= 0.8 &&
       !hasMarkedComplete &&
@@ -78,18 +100,21 @@ const Course = () => {
             {currentChapter?.video ? (
               <ReactPlayer
                 ref={playerRef}
-                url={currentChapter.video as string}
-                controls={true}
+                // url={currentChapter.video as string}
+                src={currentChapter.video as string}
+                controls
                 width="100%"
                 height="100%"
-                onProgress={handleProgress}
-                config={{
-                  file: {
-                    attributes: {
-                      controlsList: "nodownload",
-                    },
-                  },
-                }}
+                onTimeUpdate={handleTimeUpdate}
+                controlsList="nodownload"
+                // onProgress={handleProgress}
+                // config={{
+                //   file: {
+                //     attributes: {
+                //       controlsList: "nodownload",
+                //     },
+                //   },
+                // }}
               />
             ) : (
               <div className="course__no-video">
