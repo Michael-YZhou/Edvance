@@ -17,7 +17,10 @@ const customBaseQuery = async (
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     prepareHeaders: async (headers) => {
-      const token = await window.Clerk?.session?.getToken(); // get the token from the currently active clerk session
+      // get the token from the currently active clerk session.
+      // window is a global object that is used to access the Clerk object.
+      // interface Window is defined in the index.d.ts file to include the Clerk object.
+      const token = await window.Clerk?.session?.getToken();
       if (token) {
         headers.set("Authorization", `Bearer ${token}`); // set the token in the headers for every request
       }
@@ -225,6 +228,28 @@ export const api = createApi({
         }
       },
     }),
+
+    /* 
+    ===============
+    VIDEO UPLOAD
+    =============== 
+    */
+    getUploadVideoUrl: builder.mutation<
+      { uploadUrl: string; videoUrl: string },
+      {
+        courseId: string;
+        sectionId: string;
+        chapterId: string;
+        fileName: string;
+        fileType: string;
+      }
+    >({
+      query: ({ courseId, sectionId, chapterId, fileName, fileType }) => ({
+        url: `courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/get-upload-url`,
+        method: "POST",
+        body: { fileName, fileType },
+      }),
+    }),
   }),
 });
 
@@ -241,4 +266,5 @@ export const {
   useGetUserEnrolledCoursesQuery,
   useGetUserCourseProgressQuery,
   useUpdateUserCourseProgressMutation,
+  useGetUploadVideoUrlMutation,
 } = api;

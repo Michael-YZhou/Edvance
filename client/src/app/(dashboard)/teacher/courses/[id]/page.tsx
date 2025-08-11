@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/state/redux";
-import { useGetCourseQuery, useUpdateCourseMutation } from "@/state/api";
+import {
+  useGetCourseQuery,
+  useUpdateCourseMutation,
+  useGetUploadVideoUrlMutation,
+} from "@/state/api";
 import { courseSchema } from "@/lib/schemas";
 import {
   centsToDollars,
@@ -29,6 +33,7 @@ const CourseEditor = () => {
   const { data: course, isLoading, refetch } = useGetCourseQuery(id);
   const [updateCourse] = useUpdateCourseMutation();
   // upload video function
+  const [getUploadVideoUrl] = useGetUploadVideoUrlMutation();
 
   const dispatch = useAppDispatch();
   const { sections } = useAppSelector((state) => state.global.courseEditor);
@@ -61,15 +66,23 @@ const CourseEditor = () => {
 
   const onSubmit = async (data: CourseFormData) => {
     try {
-      const formData = createCourseFormData(data, sections);
+      // upload all videos to S3 and get the updated sections with the video URLs on CloudFront CDN
+      const updatedSections = await uploadAllVideos(
+        sections,
+        id,
+        getUploadVideoUrl
+      );
 
-      const updatedCourse = await updateCourse({
+      // create the form data with the updated sections with the video URL
+      const formData = createCourseFormData(data, updatedSections);
+
+      // update the course with the updated sections with the video URL
+      await updateCourse({
         courseId: id,
         formData,
       }).unwrap();
 
-      // await uploadAllVideos(sections, updatedCourse.sections, id, uploadVideo);
-
+      // refetch the course to get the updated data
       refetch();
     } catch (error) {
       console.error("Failed to update course", error);

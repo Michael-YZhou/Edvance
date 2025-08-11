@@ -300,12 +300,15 @@ export const createCourseFormData = (
   sections: Section[]
 ): FormData => {
   const formData = new FormData();
+
+  // adding the course data to the form data
   formData.append("title", data.courseTitle);
   formData.append("description", data.courseDescription);
   formData.append("category", data.courseCategory);
   formData.append("price", data.coursePrice.toString());
   formData.append("status", data.courseStatus ? "Published" : "Draft");
 
+  // adding the video URL to the sections
   const sectionsWithVideos = sections.map((section) => ({
     ...section,
     chapters: section.chapters.map((chapter) => ({
@@ -314,6 +317,7 @@ export const createCourseFormData = (
     })),
   }));
 
+  // adding the sections to the form data
   formData.append("sections", JSON.stringify(sectionsWithVideos));
 
   return formData;
@@ -365,6 +369,7 @@ async function uploadVideo(
   const file = chapter.video as File;
 
   try {
+    // sending the file name and type to the server to get the s3 pre-signed URL and cloudfront URL
     const { uploadUrl, videoUrl } = await getUploadVideoUrl({
       courseId,
       sectionId,
@@ -373,6 +378,7 @@ async function uploadVideo(
       fileType: file.type,
     }).unwrap();
 
+    // making request to the aws s3 bucket pre-signed URL to upload the video
     await fetch(uploadUrl, {
       method: "PUT",
       headers: {
@@ -384,6 +390,7 @@ async function uploadVideo(
       `Video uploaded successfully for chapter ${chapter.chapterId}`
     );
 
+    // returning the updated chapter with the video URL where the video is stored on the cloudfront CDN
     return { ...chapter, video: videoUrl };
   } catch (error) {
     console.error(
