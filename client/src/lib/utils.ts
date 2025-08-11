@@ -8,6 +8,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function capitalizeWords(str: string) {
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 // Convert cents to formatted currency string (e.g., 4999 -> "$49.99")
 export function formatPrice(cents: number | undefined): string {
   return new Intl.NumberFormat("en-US", {

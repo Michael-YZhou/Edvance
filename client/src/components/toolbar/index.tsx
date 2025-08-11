@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { courseCategories } from "@/lib/utils";
+import { capitalizeWords, courseCategories } from "@/lib/utils";
 
 const Toolbar = ({ onSearch, onCategoryChange }: ToolbarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,16 +29,19 @@ const Toolbar = ({ onSearch, onCategoryChange }: ToolbarProps) => {
           <SelectValue placeholder="Categories" />
         </SelectTrigger>
         <SelectContent className="bg-customgreys-primarybg hover:bg-customgreys-primarybg">
-          <SelectItem value="all" className="toolbar__select-item">
+          <SelectItem
+            value="all"
+            className="toolbar__select-item text-white-50"
+          >
             All Categories
           </SelectItem>
           {courseCategories.map((catergory) => (
             <SelectItem
               key={catergory.value}
               value={catergory.value}
-              className="toolbar__select-item"
+              className="toolbar__select-item text-white-50"
             >
-              {catergory.value}
+              {capitalizeWords(catergory.value)}
             </SelectItem>
           ))}
         </SelectContent>

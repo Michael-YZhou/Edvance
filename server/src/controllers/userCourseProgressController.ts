@@ -26,7 +26,7 @@ export const getUserEnrolledCourses = async (
     const courses = await Course.batchGet(courseIds);
     res.json({
       message: "Enrolled courses retrieved successfully",
-      data: courseIds,
+      data: courses,
     });
   } catch (error) {
     res.status(500).json({

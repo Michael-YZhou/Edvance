@@ -1,13 +1,13 @@
 "use client";
 
-import Toolbar from "@/components/Toolbar";
+import Toolbar from "@/components/toolbar";
 import CourseCard from "@/components/CourseCard";
 import { useGetUserEnrolledCoursesQuery } from "@/state/api";
 import { useRouter } from "next/navigation";
-import Header from "@/components/Header";
+import Header from "@/components/header";
 import { useUser } from "@clerk/nextjs";
 import { useState, useMemo } from "react";
-import Loading from "@/components/Loading";
+import Loading from "@/components/loading";
 
 const Courses = () => {
   const router = useRouter();

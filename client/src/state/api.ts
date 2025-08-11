@@ -72,7 +72,7 @@ export const api = createApi({
   // }), // if you want to use the default base query
   baseQuery: customBaseQuery, // this is the custom base query used across all endpoints
   reducerPath: "api",
-  tagTypes: ["Courses", "Users"],
+  tagTypes: ["Courses", "Users", "UserCourseProgress"],
   endpoints: (builder) => ({
     /* 
     ===============
@@ -165,6 +165,66 @@ export const api = createApi({
         body: transaction,
       }),
     }),
+
+    /* 
+    ===============
+    USER COURSE PROGRESS
+    =============== 
+    */
+    getUserEnrolledCourses: builder.query<Course[], string>({
+      query: (userId) => `users/course-progress/${userId}/enrolled-courses`,
+      providesTags: ["Courses", "UserCourseProgress"],
+    }),
+
+    getUserCourseProgress: builder.query<
+      UserCourseProgress,
+      { userId: string; courseId: string }
+    >({
+      query: ({ userId, courseId }) =>
+        `users/course-progress/${userId}/courses/${courseId}`,
+      providesTags: ["UserCourseProgress"],
+    }),
+
+    updateUserCourseProgress: builder.mutation<
+      UserCourseProgress,
+      {
+        userId: string;
+        courseId: string;
+        progressData: {
+          sections: SectionProgress[];
+        };
+      }
+    >({
+      query: ({ userId, courseId, progressData }) => ({
+        url: `users/course-progress/${userId}/courses/${courseId}`,
+        method: "PUT",
+        body: progressData,
+      }),
+      invalidatesTags: ["UserCourseProgress"],
+      async onQueryStarted(
+        { userId, courseId, progressData },
+        { dispatch, queryFulfilled }
+      ) {
+        // update the user course progress in the cache on the client side before the query is fulfilled
+        const patchResult = dispatch(
+          api.util.updateQueryData(
+            "getUserCourseProgress",
+            { userId, courseId },
+            (draft) => {
+              Object.assign(draft, {
+                ...draft,
+                sections: progressData.sections,
+              });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -178,4 +238,7 @@ export const {
   useGetTransactionsQuery,
   useCreateStripePaymentIntentMutation,
   useCreateTransactionMutation,
+  useGetUserEnrolledCoursesQuery,
+  useGetUserCourseProgressQuery,
+  useUpdateUserCourseProgressMutation,
 } = api;
