@@ -228,6 +228,28 @@ export const api = createApi({
         }
       },
     }),
+
+    /* 
+    ===============
+    VIDEO UPLOAD
+    =============== 
+    */
+    getUploadVideoUrl: builder.mutation<
+      { uploadUrl: string; videoUrl: string },
+      {
+        courseId: string;
+        sectionId: string;
+        chapterId: string;
+        fileName: string;
+        fileType: string;
+      }
+    >({
+      query: ({ courseId, sectionId, chapterId, fileName, fileType }) => ({
+        url: `courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/get-upload-url`,
+        method: "POST",
+        body: { fileName, fileType },
+      }),
+    }),
   }),
 });
 
@@ -244,4 +266,5 @@ export const {
   useGetUserEnrolledCoursesQuery,
   useGetUserCourseProgressQuery,
   useUpdateUserCourseProgressMutation,
+  useGetUploadVideoUrlMutation,
 } = api;
