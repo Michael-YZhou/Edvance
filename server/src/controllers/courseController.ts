@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import Course from "../models/courseModel";
+import aws from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { getAuth } from "@clerk/express";
+
+// create a new S3 instance
+const s3 = new aws.S3();
 
 /**
  * List all courses
@@ -178,5 +182,60 @@ export const deleteCourse = async (
     res.json({ message: "course deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting course", error: error });
+  }
+};
+
+/**
+ * Get a pre-signed URL to upload a video to S3 and a video URL to update the course's video URL
+ * @param req - The request object
+ * @param res - The response object
+ * @returns A pre-signed URL to upload a video to S3 and a video URL to update the course's video URL
+ */
+export const getUploadVideoUrl = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { fileName, fileType } = req.body;
+
+  if (!fileName || !fileType) {
+    res.status(400).json({ message: "File name and file type are required" });
+    return;
+  }
+
+  try {
+    const uniqueId = uuidv4();
+    // The S3 key is the path to the video in the S3 bucket.
+    const s3Key = `videos/${uniqueId}/${fileName}`;
+
+    const s3Params = {
+      Bucket: process.env.S3_BUCKET_NAME || "",
+      Key: s3Key,
+      Expires: 60,
+      ContentType: fileType,
+    };
+
+    // Generate a pre-signed URL to upload the video to S3. This URL allows a client to upload a file directly to S3
+    // without needing to authenticate with AWS. The URL expires after 60 seconds.
+    // The user then uploads the file to S3.
+    const uploadUrl = s3.getSignedUrl("putObject", s3Params);
+    // CloudFront is a CDN that serves the video from the S3 bucket.
+    // The Domain is saved in the .env file once the CloudFront distribution is created.
+    // The video URL is the URL of the video on the CDN.
+    // This URL is used to update the course's video URL.
+    const videoUrl = `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${fileName}`;
+
+    // the uploadUrl is the URL to upload the video to S3.
+    // the videoUrl is the URL of the video on the CDN.
+    res.json({
+      message: "Upload URL generated successfully",
+      data: {
+        uploadUrl,
+        videoUrl,
+      },
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error generating upload URL", error: error });
   }
 };
