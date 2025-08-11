@@ -67,12 +67,11 @@ const TeacherCourseCard = ({
           )}
         </div>
 
-        <div className="w-full flex gap-2 mt-3">
+        <div className="w-full xl:flex space-y-2 xl:space-y-0 gap-2 mt-3">
           {isOwner ? (
             <>
               <div>
                 <Button
-                  variant="outline"
                   className="course-card-teacher__edit-button"
                   onClick={() => onEdit(course)}
                 >
@@ -82,7 +81,6 @@ const TeacherCourseCard = ({
               </div>
               <div>
                 <Button
-                  variant="destructive"
                   className="course-card-teacher__delete-button"
                   onClick={() => onDelete(course)}
                 >
