@@ -84,7 +84,7 @@ const SectionModal = () => {
     <CustomModal isOpen={isSectionModalOpen} onClose={onClose}>
       <div className="section-modal">
         <div className="section-modal__header">
-          <h2 className="section-modal__title">Add/Edit Chapter</h2>
+          <h2 className="section-modal__title">Add/Edit Section</h2>
           <button onClick={onClose} className="section-modal__close">
             <X className="w-6 h-6" />
           </button>
