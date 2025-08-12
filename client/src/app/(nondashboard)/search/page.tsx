@@ -35,13 +35,14 @@ function Search() {
 
   const handleCourseSelect = (course: Course) => {
     setSelectedCourse(course);
-    router.push(`/search?id=${course.courseId}`);
+    router.push(`/search?id=${course.courseId}`, { scroll: false });
   };
 
   const handleEnrollNow = () => {
     if (selectedCourse) {
       router.push(
-        `/checkout?step=1&id=${selectedCourse.courseId}&showSignUp=false`
+        `/checkout?step=1&id=${selectedCourse.courseId}&showSignUp=false`,
+        { scroll: false }
       );
     }
   };

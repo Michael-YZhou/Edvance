@@ -17,13 +17,14 @@ export default function NonDashboardNavbar() {
     <nav className="nondashboard-navbar">
       <div className="nondashboard-navbar__container">
         <div className="nondashboard-navbar__search">
-          <Link href="/" className="nondashboard-navbar__brand">
+          <Link href="/" className="nondashboard-navbar__brand" scroll={false}>
             Edvance
           </Link>
           <div className="flex items-center gap-4">
             <div className="relative group">
               <Link
                 href="/search"
+                scroll={false}
                 className="nondashboard-navbar__search-input"
               >
                 <span className="hidden sm:inline">Search Courses</span>
@@ -71,12 +72,14 @@ export default function NonDashboardNavbar() {
             <Link
               href="/signin"
               className="nondashboard-navbar__auth-button--login"
+              scroll={false}
             >
               Log in
             </Link>
             <Link
               href="/signup"
               className="nondashboard-navbar__auth-button--signup"
+              scroll={false}
             >
               Sign up
             </Link>

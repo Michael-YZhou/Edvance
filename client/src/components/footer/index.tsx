@@ -12,6 +12,7 @@ function Footer() {
               href={`/${item.toLowerCase().replace(" ", "-")}`}
               key={item}
               className="footer__link"
+              scroll={false}
             >
               {item}
             </Link>
