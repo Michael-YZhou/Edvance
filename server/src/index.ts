@@ -5,6 +5,8 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import * as dynamoose from "dynamoose";
+import serverless from "serverless-http";
+import seed from "./seed/seedDynamodb";
 import {
   clerkMiddleware,
   createClerkClient,
@@ -53,6 +55,28 @@ app.use("/users/course-progress", requireAuth(), userCourseProgressRoutes); // p
 /* SERVER */
 const PORT = process.env.PORT || 3000;
 
+/* LOCAL DEVELOPMENT ENVIRONMENT */
 if (!isProduction) {
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
+
+/* AWS PRODUCTION ENVIRONMENT */
+// export the serverless app using serverless-http
+const serverlessApp = serverless(app);
+
+// seed the database
+export const handler = async (event: any, context: any) => {
+  // If the action is seed, grab the seed script and seed the database
+  // This is not the best way to seed the database because someone can reseed the database by calling the handler again
+  // but it's a quick and dirty way to seed the database
+  if (event.action === "seed") {
+    await seed();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Database seeded successfully" }),
+    };
+  } else {
+    // if the action is not seed, return the serverless app
+    return serverlessApp(event, context);
+  }
+};
