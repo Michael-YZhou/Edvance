@@ -1,6 +1,6 @@
 # Build stage
 # Use AWS Lambda Node.js 20 base image
-FROM public.ecr.aws/lambda/nodejs:20 AS build
+FROM public.ecr.aws/lambda/nodejs:22 AS build
 
 # Set working directory
 WORKDIR /app
@@ -22,7 +22,7 @@ RUN npm prune --production
 
 # Production stage
 # Use a second stage to prepare the production image
-FROM public.ecr.aws/lambda/nodejs:20
+FROM public.ecr.aws/lambda/nodejs:22
 
 # Set working directory
 WORKDIR ${LAMBDA_TASK_ROOT}
