@@ -11,6 +11,8 @@ Students can browse, purchase, and consume course content with a seamless and re
 
 🚀 **Live Demo:** [Edvance on Vercel](https://edvance-dxif3sawf-michael-yzhous-projects.vercel.app/)
 
+![Edvance Screenshot](client/public/images/screenshot.png)
+
 ---
 
 ## Features
