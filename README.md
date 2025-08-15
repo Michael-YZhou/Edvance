@@ -1,40 +1,133 @@
-# Edvance
+# Edvance – Video-Centric E-learning Platform
 
-## Description
+**Tech Stack:**  
+TypeScript • Next.js • Node.js • AWS Lambda • API Gateway • DynamoDB • S3 • CloudFront • GitHub Actions
 
-A robust LMS focused on video-based education. The frontend is built with Next.js and the backend with Node.js and Express. The platform is containerized with Docker and fully deployed on AWS, utilizing ECR for image storage, S3 for video hosting, DynamoDB for scalable NoSQL data storage, Lambda for serverless functions, and CloudFront for fast, secure content delivery.
+## Overview
+
+Edvance is a full-stack video-centric e-learning platform designed to provide an end-to-end online education experience.  
+It enables teachers to create courses, upload and stream videos, manage billing, and securely authenticate users.  
+Students can browse, purchase, and consume course content with a seamless and responsive UI.
+
+🚀 **Live Demo:** [Edvance on Vercel](https://edvance-dxif3sawf-michael-yzhous-projects.vercel.app/)
+
+---
+
+## Features
+
+- **Course Creation** – Teachers can create and manage courses with a step-by-step wizard.
+- **Video Uploading & Playback** – Upload videos to AWS S3, accessed globally via CloudFront.
+- **Secure Authentication** – User sign-up/sign-in handled via [Clerk](https://clerk.com) with role-based access control.
+- **Checkout & Billing** – Integrated Stripe payment gateway for purchasing courses.
+- **Responsive UI** – Built with modern web design principles for desktop and mobile users.
+- **Cloud-Native Backend** – Fully serverless backend powered by AWS Lambda and API Gateway.
+- **Automated Deployments** – CI/CD pipeline using GitHub Actions.
+
+---
+
+## Architecture
+
+**Frontend**
+
+- Built with **Next.js** and **TypeScript**
+- Client-side routing, server-side rendering (SSR), and API integration via REST
+
+**Backend**
+
+- **AWS Lambda** host docker image and exposed via API Gateway
+- **DynamoDB** for storing user, course, and transaction data
+- **S3** for video storage
+- **CloudFront** for global low-latency video delivery
+
+**Authentication**
+
+- Powered by Clerk for secure, scalable user management
+
+**Deployment**
+
+- Frontend deployed on Vercel
+- Backend and infrastructure hosted on AWS
+- CI/CD automated with GitHub Actions for production deployments
+- Static assets stored in S3 and served via CloudFront
+
+---
+
+## Tech Highlights
+
+- **TypeScript** for both frontend and backend
+- **REST API** design and implementation
+- **Cloud Architecture** with AWS serverless stack
+- **Database Design** with NoSQL DynamoDB modeling
+- **Deployment Automation** with GitHub Actions workflows
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 22
+- AWS account (with IAM permissions for Lambda, S3, DynamoDB, CloudFront)
+- Clerk account for authentication
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Michael-YZhou/Edvance
+   cd edvance
+   ```
+2. Install dependencies for both client and server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   # Install client dependencies
+   cd client
+   npm install
 
-## Learn More
+   # Install server dependencies
+   cd ../server
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. Set up environment variables:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - In /client, create a .env.local file
+   - In /server, create a .env file for AWS Lambda functions
+   - Include variables for:
+     - AWS credentials & config
+     - Clerk API keys
+     - Payment provider keys (e.g., Stripe)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Run the development server:
 
-## Deploy on Vercel
+   Open two terminals:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   **Client (frontend)**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   cd client
+   npm run dev
+   ```
+
+   **Server (backend)**
+
+   ```bash
+   cd server
+   npm run dev
+   ```
+
+- Frontend: http://localhost:3000 (default port)
+
+- Backend: Runs on its configured local API port (e.g., http://localhost:8001)
+
+## Deployment
+
+- **Frontend:** Automatically deployed to Vercel on push to main
+
+- **Backend:** Deployed to AWS Lambda via GitHub Actions CI/CD pipeline (or manually on AWS Console)
+
+- **Assets:** Stored in S3 and delivered via CloudFront
+
+## License
+
+This project is licensed under the MIT License.
